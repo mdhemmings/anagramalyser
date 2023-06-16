@@ -18,3 +18,8 @@ jobs:
         run: go test -v ./...
       - name: Build ${{ matrix.GOOS }}
         run: GOOS=${{ matrix.GOOS }} go build  -o anagramalyser-${{ matrix.GOOS }} ./cmd
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-${{ matrix.GOOS }}
+          path: anagramalyser-${{ matrix.GOOS }}
