@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,9 +13,12 @@ import (
 
 func main() {
 	var checkedWords []string
-	filepath := "./testfile.txt"
-	// First open the file on disk
-	file, err := os.Open(filepath)
+	filepath := flag.String("file", "./testfile.txt", "location of file to analyse")
+	buffersize := flag.Int("buffersize", 2048*1024, "size of buffer to use, defaults to 2048*1024")
+	showempty := flag.Bool("showempty", false, "set to true to show empty anagram matches")
+	flag.Parse()
+	// First open the file on disk based on the flag presented
+	file, err := os.Open(*filepath)
 	// pass over any errors to our checkError function to save on lines
 	checkError(err)
 	// remember to close the file eventually
@@ -23,8 +27,8 @@ func main() {
 	buf := []byte{}
 	// we'll use bufio to read the file because buffers
 	scanner := bufio.NewScanner(file)
-	// set some kind of reasonable default buffer size
-	scanner.Buffer(buf, 2048*1024)
+	// set buffer size either from flag or by defaulting to 2048*1024
+	scanner.Buffer(buf, *buffersize)
 	lineNumber := 1
 	// iterate over our file using our scanner with it's lovely buffer
 	for scanner.Scan() {
@@ -47,7 +51,9 @@ func main() {
 				fmt.Printf("Found anagrams for %v are %v\n", checkword, anagrams)
 				// or if we dont then also let them know
 			} else {
-				fmt.Printf("No anagrams found for %v", checkword)
+				if *showempty {
+					fmt.Printf("No anagrams found for %v\n", checkword)
+				}
 			}
 			// increment our line number each time
 			lineNumber++

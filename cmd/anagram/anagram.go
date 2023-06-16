@@ -3,6 +3,9 @@ package anagram
 func isAnagram(s string, t string) bool {
 	lenS := len(s)
 	lenT := len(t)
+	if s == t {
+		return false
+	}
 	if lenS != lenT {
 		return false
 	}
