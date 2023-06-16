@@ -5,6 +5,9 @@ on: [push, workflow_dispatch]
 jobs:
   testAndBuild:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        GOOS: ['linux','windows']
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
@@ -13,7 +16,5 @@ jobs:
           go-version: '1.17'
       - name: Test
         run: go test -v ./...
-      - name: Build Linux
-        run: GOOS=linux go build -v ./... -o anagramalyser
-      - name: Build Windows
-        run: GOOS=windows go build -v ./... -o anagramalyser.exe
+      - name: Build ${{ matrix.GOOS }}
+        run: GOOS=${{ matrix.GOOS }} go build  -o anagramalyser-${{ matrix.GOOS }} -v ./...
