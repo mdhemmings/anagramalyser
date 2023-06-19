@@ -1,2 +1,2 @@
-abc def cba
-asd 
+abc def cba asd
+bbb ccc ooo

@@ -56,6 +56,16 @@ PASS
 ok      github.com/mdhemmings/anagramalyser/cmd/anagram 0.212s
 ```
 
+## Workflow files
+<hr>
+
+Included is a workflow file that will run a go test and then build if this passes; it uses a matrix strategy to build for multiple OS so if you need to build for another OS than the included linux and windows then you can simply expand the array as follows:
+```yaml
+    strategy:
+      matrix:
+        GOOS: ['linux','windows','aix','openbsd']
+```
+And it will create binaries and artifacts for the new entries.
 ## Contributing
 <hr>
 Pull requests are welcome. Please make sure to update tests as appropriate.
